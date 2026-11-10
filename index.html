@@ -150,6 +150,17 @@ img[data-src]:not(.ok){visibility:hidden}
 .wa{background:#052e22;color:#4ade80}
 .dark .wa{background:rgba(74,222,128,.12)}
 .note{border:1.5px dashed rgba(147,197,253,.4);border-radius:var(--r);padding:22px 26px;color:#c7d6ee}
+.sp{display:flex;align-items:center;gap:20px;width:100%;max-width:540px;text-align:left;border:1.5px solid rgba(147,197,253,.4);border-radius:var(--r);padding:16px 20px;background:rgba(255,255,255,.04);color:#fff;cursor:pointer;transition:transform .25s,border-color .25s,background .25s,opacity .7s ease}
+.sp:hover,.sp:focus-visible,.js .sp.in:hover{transform:translateY(-3px);border-color:var(--cyan);background:rgba(255,255,255,.08)}
+.sp .lg{flex:0 0 160px;width:160px;height:90px;background:#fff;border-radius:12px;display:flex;align-items:center;justify-content:center;padding:10px;overflow:hidden;color:#0a2a6b;font-weight:800;font-size:1.8rem}
+.sp .lg img{display:block;width:100%;height:100%;object-fit:contain}
+.sp .tx{min-width:0}
+.sp b{display:block;font-size:1.15rem;letter-spacing:.02em;overflow-wrap:anywhere}
+.sp small{display:block;margin-top:4px;color:#93c5fd;font-size:.85rem}
+.dlg .av.sp-av{background:#fff;padding:28px;min-height:220px}
+.dlg .av.sp-av img{width:100%;height:auto;max-height:240px;object-fit:contain}
+.dlg .bd #mDesc{white-space:pre-line}
+@media(max-width:560px){.sp{flex-direction:column;align-items:stretch;gap:14px;padding:14px}.sp .lg{flex:none;width:100%;height:110px}}
 .final{text-align:center;background:linear-gradient(135deg,var(--dark),var(--navy));color:#fff}
 .final .lead{margin:0 auto 28px;color:#c7d6ee}
 .final .bar{margin:0 auto 18px}
@@ -197,6 +208,9 @@ footer{background:var(--navy);color:#9fb3d1;padding:48px 0 34px;border-top:1px s
 }
 @media(max-width:620px){.grid3,.soc{grid-template-columns:1fr}.team,.preview .team{gap:14px}.mem .bd{padding:14px}.cta .btn,.hjoin .btn{flex:1 1 100%}}
 @media(max-width:340px){.team,.preview .team{grid-template-columns:1fr}}
+@media(max-width:860px){.dlg{max-height:calc(100dvh - 32px)}.dlg .bd{padding:24px 22px}}
+@media(max-width:480px){.modal{padding:12px}.dlg{border-radius:18px;max-height:calc(100dvh - 24px)}.dlg h3{font-size:1.35rem}.dlg .acts .btn{flex:1 1 100%}}
+img,svg,video{max-width:100%}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}.orb,.dot{display:none}.enter{opacity:1;transform:none}}
 </style>
 </head>
@@ -298,8 +312,10 @@ footer{background:var(--navy);color:#9fb3d1;padding:48px 0 34px;border-top:1px s
   <h3 class="rv sub" style="margin-bottom:18px" data-i18n="joinTitle">Join Our Community</h3>
   <div class="join" id="joinGrid"></div>
   <h3 class="rv sub" style="margin-bottom:18px" data-i18n="partTitle">Partnership inquiries</h3>
-  <!-- CONFIGURABLE: set PARTNER_CONTACT in the script to an official email/URL when available. Nothing is shown as a link until then. -->
-  <div class="note rv" id="partner"></div>
+  <button type="button" class="sp rv" id="partner" data-open="999" aria-haspopup="dialog">
+   <span class="lg" id="spLg"><span class="fb" aria-hidden="true">TG</span></span>
+   <span class="tx"><b>TANAKA GROUP</b><small data-i18n="spLabel">Click to learn more</small></span>
+  </button>
  </div>
 </section>
 </main>
@@ -336,7 +352,12 @@ const LINKS={
  v1:'https://chat.whatsapp.com/FlM7uD53twb7q85WElKFZh?s=cl&p=a&iam=2',
  v2:'https://chat.whatsapp.com/CyvAjrp7wnKGSU93HGXOOq?s=cl&p=a&iam=2'
 };
-const PARTNER_CONTACT=''; /* Set to an official email or URL when available. */
+const SP_DESC={
+ en:'Tanaka Group is the official funding partner of Hokago Time Community, dedicated to supporting and financing community events and activities.\n\nThrough continuous financial support, Tanaka Group aims to help HTC create memorable experiences, organize successful events, and build a stronger community.',
+ id:'Tanaka Group adalah official funding partner Hokago Time Community, yang berdedikasi mendukung dan mendanai berbagai acara dan kegiatan komunitas.\n\nMelalui dukungan finansial yang berkelanjutan, Tanaka Group bertujuan membantu HTC menciptakan pengalaman yang berkesan, menyelenggarakan acara yang sukses, dan membangun komunitas yang lebih kuat.'
+};
+const SP={n:'TANAKA GROUP',r:'Official Funding Partner',img:'https://kappa.lol/QZmpeg'};
+const SP_IDX=999;
 const ADMINS=[
  {n:'Abian Akromi',r:'Founder',a:'https://kappa.lol/P67QyD',u:'https://www.instagram.com/yanjikuyo22?dlrf=ampqMzVreDBtZDdo',
   d:{en:'The visionary behind HTC, responsible for its overall direction and key decisions. Ensures the community continues to operate in line with its goals.',id:'Sosok visioner di balik HTC yang bertanggung jawab atas arah dan keputusan penting komunitas. Memastikan komunitas terus berjalan sesuai tujuannya.'}},
@@ -390,7 +411,7 @@ en:{
  offSocial:'Official Social Media',visit:'Follow Us',
  tiktokD:'Short videos and updates from HTC.',instagramD:'Photos, posts, and announcements from HTC.',channelD:'Official announcements through the WhatsApp Channel.',
  joinTitle:'Join Our Community',joinD:'Join the conversation in this WhatsApp group.',join1:'Join HTC V1',join2:'Join HTC V2',
- partTitle:'Partnership inquiries',partNone:'An official partnership contact will be posted here. For now, please reach HTC through the official social media above.',partHave:'For partnership inquiries, contact:',
+ partTitle:'Official Funding Partner',spLabel:'Tap to learn more',spDesc:SP_DESC.en,partNone:'An official partnership contact will be posted here. For now, please reach HTC through the official social media above.',partHave:'For partnership inquiries, contact:',
  footDesc:'A place for HTT fans to share memories, stories, have fun, and enjoy casual conversations together.',footNav:'Navigate',followUs:'Follow Us',rights:'All rights reserved.',
  visitAcc:'Visit public account',back:'Back to Team',close:'Close'
 },
@@ -419,7 +440,7 @@ id:{
  offSocial:'Media Sosial Resmi',visit:'Ikuti Kami',
  tiktokD:'Video pendek dan kabar terbaru dari HTC.',instagramD:'Foto, postingan, dan pengumuman dari HTC.',channelD:'Pengumuman resmi melalui Saluran WhatsApp.',
  joinTitle:'Gabung Komunitas',joinD:'Ikut mengobrol di grup WhatsApp ini.',join1:'Gabung HTC V1',join2:'Gabung HTC V2',
- partTitle:'Kerja sama',partNone:'Kontak resmi untuk kerja sama akan dicantumkan di sini. Untuk saat ini, silakan hubungi HTC melalui media sosial resmi di atas.',partHave:'Untuk pertanyaan kerja sama, hubungi:',
+ partTitle:'Official Funding Partner',spLabel:'Ketuk untuk info lebih lanjut',spDesc:SP_DESC.id,partNone:'Kontak resmi untuk kerja sama akan dicantumkan di sini. Untuk saat ini, silakan hubungi HTC melalui media sosial resmi di atas.',partHave:'Untuk pertanyaan kerja sama, hubungi:',
  footDesc:'Tempat bagi para penggemar HTT untuk berbagi kenangan, cerita, bersenang-senang, dan mengobrol santai bersama.',footNav:'Navigasi',followUs:'Ikuti Kami',rights:'Hak cipta dilindungi.',
  visitAcc:'Kunjungi akun publik',back:'Kembali ke Tim',close:'Tutup'
 }};
@@ -467,9 +488,6 @@ function applyLang(l,save){
  $$('[data-desc]').forEach(el=>el.textContent=ADMINS[el.dataset.desc].d[l]);
  $$('.lang button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.lang===l));
  $('#burger').setAttribute('aria-label',t($('#burger').getAttribute('aria-expanded')==='true'?'menuClose':'menuOpen'));
- const p=$('#partner');
- if(PARTNER_CONTACT){const isUrl=/^https?:/.test(PARTNER_CONTACT);const href=isUrl?PARTNER_CONTACT:'mailto:'+PARTNER_CONTACT;p.innerHTML=esc(t('partHave'))+' <a style="color:var(--cyan);font-weight:700" href="'+esc(href)+'">'+esc(PARTNER_CONTACT)+'</a>'}
- else p.textContent=t('partNone');
  if(openIdx>=0)fillModal(openIdx);
  document.title=l==='id'?'HTC – Hokago Time Creator/Community (Komunitas)':'HTC – Hokago Time Creator/Community';
  if(save){try{localStorage.setItem('htc-lang',l)}catch(e){}}
@@ -477,7 +495,39 @@ function applyLang(l,save){
 /* ---------- MODAL ---------- */
 let openIdx=-1,lastFocus=null;
 const modal=$('#modal'),dlg=$('.dlg',modal);
+/* sponsor logo: shows the image right away, then (if the host allows it) trims the empty white margins */
+let spSrc=null,spTried=false;
+function trimWhite(img){
+ const sc=Math.min(1,900/img.naturalWidth),w=Math.round(img.naturalWidth*sc),h=Math.round(img.naturalHeight*sc);
+ const c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d');x.drawImage(img,0,0,w,h);
+ const p=x.getImageData(0,0,w,h).data;let x0=w,y0=h,x1=-1,y1=-1;
+ for(let y=0;y<h;y++)for(let q=0;q<w;q++){const i=(y*w+q)*4;if(p[i+3]>20&&(p[i]<235||p[i+1]<235||p[i+2]<235)){if(q<x0)x0=q;if(q>x1)x1=q;if(y<y0)y0=y;if(y>y1)y1=y}}
+ if(x1<0)return null;
+ const px=Math.round(w*.03),py=Math.round(h*.03);x0=Math.max(0,x0-px);y0=Math.max(0,y0-py);x1=Math.min(w-1,x1+px);y1=Math.min(h-1,y1+py);
+ const cw=x1-x0+1,ch=y1-y0+1;if(cw>=w*.97&&ch>=h*.97)return null;
+ const o=document.createElement('canvas');o.width=cw;o.height=ch;o.getContext('2d').drawImage(c,x0,y0,cw,ch,0,0,cw,ch);return o.toDataURL('image/png');
+}
+function setSpImg(box,src,alt){let im=box.querySelector('img');if(!im){im=document.createElement('img');box.textContent='';box.appendChild(im)}im.alt=alt;im.src=src}
+async function loadSponsor(){
+ if(spTried)return;spTried=true;
+ try{const im=await loadAny(SP.img,false);spSrc=im.src;paintSponsor()}catch(e){return}
+ try{const im=await loadAny(SP.img,true);const u=trimWhite(im);if(u){spSrc=u;paintSponsor()}}catch(e){}
+}
+function paintSponsor(){
+ if(!spSrc)return;
+ setSpImg($('#spLg'),spSrc,'Tanaka Group logo');
+ if(openIdx===SP_IDX)setSpImg($('#mAv'),spSrc,'Tanaka Group logo');
+}
 function fillModal(i){
+ const isSp=i===SP_IDX;
+ $('#mLink').style.display=isSp?'none':'';$('#mBack').style.display=isSp?'none':'';
+ $('#mAv').classList.toggle('sp-av',isSp);
+ if(isSp){
+  $('#mName').textContent=SP.n;$('#mRole').textContent=SP.r;$('#mDesc').textContent=t('spDesc');
+  const box=$('#mAv');box.textContent='TG';
+  if(spSrc)setSpImg(box,spSrc,'Tanaka Group logo');else loadSponsor();
+  return;
+ }
  const a=ADMINS[i];
  $('#mName').textContent=a.n;$('#mRole').textContent=a.r;$('#mDesc').textContent=a.d[lang];$('#mLink').href=a.u;
  avatar(a,$('#mAv'));
@@ -543,7 +593,7 @@ function observe(){
 addEventListener('hashchange',()=>{const id=location.hash.slice(1);if(IDS.includes(id))setActive(id)});
 
 /* ---------- IMAGE LOADER (tries several file extensions; strips white logo backgrounds) ---------- */
-const EXTS=['','.png','.webp','.jpg','.jpeg','.gif'];
+const EXTS=['','.png','.webp','.jpg','.jpeg','.gif','.svg','.avif'];
 function loadImg(url,cors){return new Promise((ok,no)=>{const i=new Image();i.referrerPolicy='no-referrer';if(cors)i.crossOrigin='anonymous';i.onload=()=>ok(i);i.onerror=no;i.src=url})}
 async function loadAny(base,cors){for(const x of EXTS){try{return await loadImg(base+x,cors)}catch(e){}}throw new Error('x')}
 function cutWhite(img){
@@ -577,7 +627,7 @@ async function initImages(){
 }
 /* ---------- INIT ---------- */
 $('#yr').textContent=new Date().getFullYear();
-build();initImages();applyLang(lang,false);observe();setActive(IDS.includes(location.hash.slice(1))?location.hash.slice(1):'home');
+build();initImages();loadSponsor();applyLang(lang,false);observe();setActive(IDS.includes(location.hash.slice(1))?location.hash.slice(1):'home');
 setTimeout(()=>$$('.rv').forEach(e=>{if(!e.classList.contains('in')&&e.getBoundingClientRect().top<innerHeight)e.classList.add('in')}),300);
 </script>
 </body>
