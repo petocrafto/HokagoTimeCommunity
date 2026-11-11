@@ -360,19 +360,19 @@ const SP_DESC={
 const SP={n:'TANAKA GROUP',r:'Official Funding Partner',img:'https://kappa.lol/pBSb2t'};
 const SP_IDX=999;
 const ADMINS=[
- {n:'Abian Akromi',r:'Founder',a:'https://kappa.lol/P67QyD',u:'https://www.instagram.com/yanjikuyo22?dlrf=ampqMzVreDBtZDdo',
+ {n:'Abian Akromi',r:'Founder',a:'https://kappa.lol/MxMI13',c:'Yui Hirasawa',u:'https://www.instagram.com/yanjikuyo22?dlrf=ampqMzVreDBtZDdo',
   d:{en:'The visionary behind HTC, responsible for its overall direction and key decisions. Ensures the community continues to operate in line with its goals.',id:'Sosok visioner di balik HTC yang bertanggung jawab atas arah dan keputusan penting komunitas. Memastikan komunitas terus berjalan sesuai tujuannya.'}},
- {n:'Alfiansyah Ramadhan',r:'Community Manager',a:'https://kappa.lol/Z9A1Pt',u:'https://www.tiktok.com/@alfiansyahdt?_r=1&_t=ZS-9Aq5LSXunqe',
+ {n:'Alfiansyah Ramadhan',r:'Community Manager',a:'https://kappa.lol/yB5Cjx',c:'Mio Akiyama',u:'https://www.tiktok.com/@alfiansyahdt?_r=1&_t=ZS-9Aq5LSXunqe',
   d:{en:'Coordinates the admin team, maintains community engagement, and helps turn the Owner’s vision into real activities.',id:'Mengoordinasikan tim admin, menjaga keterlibatan komunitas, dan membantu mewujudkan visi Owner menjadi kegiatan nyata.'}},
- {n:'Cintya Apponno',r:'Event Organizer',a:'https://kappa.lol/3Cc8ny',u:'https://www.tiktok.com/@tamaalagiesbeh?_r=1&_t=ZS-9ArcFOyZoBk',
-  d:{en:'Essential for organizing events, tournaments, and activities that keep members engaged and drive community growth.',id:'Berperan penting dalam menyelenggarakan acara, turnamen, dan kegiatan yang menjaga keaktifan anggota serta mendorong pertumbuhan komunitas.'}},
- {n:'Muhammad Rendy',r:'Media Producer',a:'https://kappa.lol/MWtZaW',u:'https://vm.tiktok.com/ZS9yNbJs2ayk5-ElYb7/',
+ {n:'Cintya Apponno',r:'Finance Manager',a:'https://kappa.lol/fqMCCf',c:'Ui Hirasawa',u:'https://www.tiktok.com/@tamaalagiesbeh?_r=1&_t=ZS-9ArcFOyZoBk',
+  d:{en:'Responsible for managing, overseeing, and recording HTC\'s financial activities, while ensuring transparency in all community income and expenditures.',id:'Bertanggung jawab mengelola, mengawasi, dan mencatat kegiatan keuangan HTC, serta memastikan transparansi dalam seluruh pemasukan dan pengeluaran komunitas.'}},
+ {n:'Muhammad Rendy',r:'Event Organizer',a:'https://kappa.lol/yOwUwx',c:'Ritsu Tainaka',u:'https://vm.tiktok.com/ZS9yNbJs2ayk5-ElYb7/',
+  d:{en:'Responsible for designing, preparing, coordinating, and executing various HTC activities and events.',id:'Bertanggung jawab merancang, menyiapkan, mengoordinasikan, dan melaksanakan berbagai kegiatan dan acara HTC.'}},
+ {n:'Ajay Lesmana',r:'Media Producer',a:'https://kappa.lol/vxnUkg',c:'Nodoka Manabe',u:'https://www.tiktok.com/@misaki_design?_r=1&_t=ZS-9Aq5y4oRUgS',
   d:{en:'Manages video content production and documentation to expand HTC’s reach and strengthen its identity.',id:'Mengelola produksi konten video dan dokumentasi untuk memperluas jangkauan HTC dan memperkuat identitasnya.'}},
- {n:'Ajay Lesmana',r:'Media Producer',a:'https://kappa.lol/YepcBZ',u:'https://www.tiktok.com/@misaki_design?_r=1&_t=ZS-9Aq5y4oRUgS',
-  d:{en:'Manages video content production and documentation to expand HTC’s reach and strengthen its identity.',id:'Mengelola produksi konten video dan dokumentasi untuk memperluas jangkauan HTC dan memperkuat identitasnya.'}},
- {n:'Veliane Aming',r:'Graphic Designer',a:'https://kappa.lol/LHqD6Q',u:'https://www.tiktok.com/@lyaaaismine',
+ {n:'Veliane Aming',r:'Graphic Designer',a:'https://kappa.lol/v0OMuC',c:'Azusa Nakano',u:'https://www.tiktok.com/@lyaaaismine',
   d:{en:'Creates posters, logos, and visual materials to maintain HTC’s consistent and appealing visual identity.',id:'Membuat poster, logo, dan materi visual untuk menjaga identitas visual HTC tetap konsisten dan menarik.'}},
- {n:'Adicandra Khenan',r:'Bot & Web Developer',a:'https://kappa.lol/suYie7',u:'https://www.tiktok.com/@nakamaprst?_r=1&_t=ZS-9Aq9ttTDWqq',
+ {n:'Adicandra Khenan',r:'Bot & Web Developer',a:'https://kappa.lol/KPjnBy',c:'Tsumugi Kotobuki',u:'https://www.tiktok.com/@nakamaprst?_r=1&_t=ZS-9Aq9ttTDWqq',
   d:{en:'Developing, managing, and maintaining HTC\'s bots, automation systems, and website to support the community\'s digital infrastructure and improve its overall functionality.',id:'Mengembangkan, mengelola, dan memelihara bot, sistem otomasi, serta website HTC untuk mendukung infrastruktur digital komunitas dan meningkatkan fungsionalitasnya.'}}
 ];
 const ICON={
@@ -457,7 +457,7 @@ const initials=n=>n.split(' ').map(w=>w[0]).slice(0,2).join('');
 
 function avatar(a,box){
  box.textContent=initials(a.n);
- loadAny(a.a,false).then(im=>{im.alt=a.n;box.textContent='';box.appendChild(im)}).catch(()=>{});
+ loadAny(a.a,false).then(im=>{im.alt=a.c?a.n+' as '+a.c:a.n;box.textContent='';box.appendChild(im)}).catch(()=>{});
 }
 function featureCards(id,keys){
  $(id).innerHTML=keys.map((k,i)=>`<article class="card rv" style="--d:${i*.1}s"><div class="ico">${ICON[k[0]]}</div><h3 data-i18n="${k[1]}t"></h3><p data-i18n="${k[1]}d"></p></article>`).join('');
